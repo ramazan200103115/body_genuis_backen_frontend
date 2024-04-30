@@ -1,0 +1,64 @@
+version: "3"
+
+services:
+    nginx:
+        image: nginx:stable-alpine
+        ports:
+            - "80:80"
+            - "443:443"
+        volumes:
+            - /etc/letsencrypt:/etc/letsencrypt
+#            - /var/www/football:/var/www
+            - ./:/var/www
+            - ./_docker/nginx/conf.d:/etc/nginx/conf.d
+        container_name: football_nginx
+        depends_on:
+            - app
+
+    app:
+        restart: always
+        build:
+            context: .
+            dockerfile: _docker/app/Dockerfile
+        expose:
+            - "9000"
+        volumes:
+            - /etc/letsencrypt:/etc/letsencrypt
+#            - /var/www/football:/var/www
+            - ./:/var/www
+        container_name: football_app
+        depends_on:
+            - db
+
+    db:
+        restart: always
+        image: mysql:8.0
+        environment:
+            MYSQL_DATABASE: medquiz
+            MYSQL_ROOT_PASSWORD: 6H2I5I2E
+        volumes:
+            - db_data:/var/lib/mysql
+        ports:
+            - "3306:3306"
+        command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --default-authentication-plugin=mysql_native_password
+        container_name: football_db
+
+#    certbot:
+#        image: certbot/certbot:latest
+#        container_name: certbot
+#        depends_on:
+#            - nginx
+#        volumes:
+#            - /etc/letsencrypt:/etc/letsencrypt
+#            - /var/www/football:/var/www
+#        command: apk add certbot certbot-nginx
+#        command: certbot --nginx -d ballcommand.com -d www.ballcommand.com
+#        command: certbot certonly --webroot --webroot-path=/var/www --email seiitmurat.bekmuratuly@gmail.com  --agree-tos --no-eff-email -d ballcommand.com
+#        command: certbot renew ---cert-name ballcommand.com --dry-run
+
+volumes:
+    db_data:
+        driver: local
+
+#    apk add certbot certbot-nginx
+#    certbot --nginx -d ballcommand.com -d www.ballcommand.com

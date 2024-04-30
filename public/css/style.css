@@ -1,0 +1,28 @@
+.top_nav .dropdown-menu li {
+    padding: 15px 0px 6px 15px !important;
+    font-size: 15px;
+}
+.action_btn {
+    min-width: 60px;
+}
+.input_row {
+    margin-bottom: 10px;
+}
+.btn-sm {
+    min-width: 60px;
+}
+.name_label { min-width: 100px; }
+.name_input { min-width: 300px; }
+.btn_create { margin-left: 15px; }
+.bradius {
+    border-radius: 10px
+}
+.active-icon {
+    background-color: white !important; /* Use !important to override inline styles if necessary */
+    color: orange !important;
+}
+
+.default-icon {
+    background-color: #49c4f8; /* Your default blue color */
+    color: white;
+}
